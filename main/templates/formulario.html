@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{%block contenido%}
+<div class="page-header">
+  <h1>{{ titulo }}</h1>
+</div>
+    {% csrf_token %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% csrf_token %}
+        {{formulario}}
+        <button type="submit" class="btn btn-default">Guardar</button>
+    </form>
+{%endblock%}
