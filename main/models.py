@@ -13,6 +13,7 @@ class Producto(models.Model):
 	precio = models.FloatField("Precio")
 	presentacion = models.CharField(max_length=20)
 	tipo = models.CharField(choices=TIPO, max_length=1)
+	imagen = models.ImageField(null=True, blank=True)
 
 
 class Puesto(models.Model):

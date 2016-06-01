@@ -1,8 +1,12 @@
 from django.shortcuts import render_to_response, redirect
 from django.template.context import RequestContext
+from django.http import HttpResponse
 from .forms import ProductoForm
 from .models import Producto
 from django.contrib.auth.decorators import login_required
+import csv
+import json
+#  from django.core.serializers.json import DjangoJSONEncoder
 
 
 def index(request):
@@ -26,7 +30,7 @@ def Productos(request):
 def creaProducto(request):
     formulario = ProductoForm()
     if request.method == 'POST':
-        formulario = ProductoForm(request.POST)
+        formulario = ProductoForm(request.POST, request.FILES,)
         if formulario.is_valid():
             formulario.save()
             return redirect('productos')
@@ -41,7 +45,7 @@ def editarProducto(request, pk):
     producto = Producto.objects.get(id=pk)
     formulario = ProductoForm(instance=producto)
     if request.method == 'POST':
-        formulario = ProductoForm(request.POST, instance=producto)
+        formulario = ProductoForm(request.POST, request.FILES, instance=producto)
         if formulario.is_valid():
             formulario.save()
             return redirect('productos')
@@ -49,3 +53,26 @@ def editarProducto(request, pk):
         'formulario': formulario,
         'titulo': 'Editar un producto',
     }, RequestContext(request))
+
+
+@login_required
+def reporte(request): 
+    data = Producto.objects.all()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="Archivo.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Nombre', 'Tipo', 'Precio', 'Presentacion'])
+    for ele in data:
+        writer.writerow([ele.nombre, ele.get_tipo_display(), ele.precio, ele.presentacion])
+    return response
+
+
+def json(request):
+    data = {}
+    data["1234"] = 1234
+    data["ale"] = "ama a Diego"
+    data["diego"] = "ama a Fil"
+    data["fil"] = "ama a Dani"
+    data["dani"] = "quiere a Ale"
+    vjson = json.JSONEncoder().encode(data)
+    return HttpResponse(vjson, content_type='application/json')

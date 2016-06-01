@@ -10,6 +10,7 @@ Prtoductos
    <table>
    	<thead>
    		<tr>
+            <td>Imagen</td>
    			<td>Nombre</td>
    			<td>Tipo</td>
    			<td>Presentacion</td>
@@ -19,6 +20,7 @@ Prtoductos
    	<tbody>
    		{%for ele in productos%}
    		<tr>
+            <td><img src="{%if ele.imagen%}{{ele.imagen.url}}{%endif%}" alt="Foto del producto"/></td>
    			{%if user.is_authenticated%}
    			<td><a href="{%url 'editarProducto' ele.id%}">{{ele.nombre}}</a></td>
    			{%else%}
