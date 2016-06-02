@@ -6,7 +6,6 @@ from .models import Producto
 from django.contrib.auth.decorators import login_required
 import csv
 import json
-#  from django.core.serializers.json import DjangoJSONEncoder
 
 
 def index(request):
@@ -67,7 +66,7 @@ def reporte(request):
     return response
 
 
-def json(request):
+def mijson(request):
     data = {}
     data["1234"] = 1234
     data["ale"] = "ama a Diego"
